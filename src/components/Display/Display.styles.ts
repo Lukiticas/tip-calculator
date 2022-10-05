@@ -1,25 +1,34 @@
 import styled from "styled-components";
 import { lighten, darken } from "polished";
 
+interface buttonProps {
+  disabled: boolean;
+}
+
 const DisplayBody = styled.div`
   padding: 1.5rem;
   border-radius: 0.4rem;
-  max-inline-size: 20rem;
+  inline-size: 100%;
 
   display: flex;
   flex-direction: column;
   gap: 1.8rem;
 
+  @media screen and (max-width: 800px) {
+    gap: 0.8rem;
+  }
+
   background-color: ${({ theme }) => theme.colors.bg700};
 `;
 
-const DisplayButton = styled.button`
-  outline: none;
+const DisplayButton = styled.button<buttonProps>`
+  margin-top: auto;
 
+  outline: none;
   border: none;
   border-radius: 0.2rem;
 
-  min-inline-size: 100%;
+  inline-size: 100%;
   padding: 0.4rem 1rem;
 
   background-color: ${({ theme }) => theme.colors.acc900};
@@ -29,6 +38,9 @@ const DisplayButton = styled.button`
   color: ${({ theme }) => theme.colors.bg700};
 
   cursor: pointer;
+
+  opacity: ${(props) => (props.disabled ? 0.2 : 1)};
+  pointer-events: ${(props) => (props.disabled ? "none" : "all")};
 
   &:hover {
     background-color: ${({ theme }) => lighten(0.3, theme.colors.acc900)};

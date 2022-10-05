@@ -9,22 +9,25 @@ export interface currency {
 
 interface DisplayProps {
   params: currency[];
-  resetFunction: () => unknown;
+  resetFunction: () => void;
+  isEmpty: boolean;
 }
 
-const Display = ({ params, resetFunction }: DisplayProps) => {
-  const handleClick = () => {
-    resetFunction();
-  };
-
+const Display = ({ params, resetFunction, isEmpty }: DisplayProps) => {
   const Screens = params.map((el) => (
     <Screen key={el.title} title={el.title} by={el.by} amount={el.amount} />
   ));
 
+  const handleClick = () => {
+    resetFunction();
+  };
+
   return (
     <DisplayBody>
       {params && Screens}
-      <DisplayButton onClick={handleClick}>RESET</DisplayButton>
+      <DisplayButton type="button" disabled={!isEmpty} onClick={handleClick}>
+        RESET
+      </DisplayButton>
     </DisplayBody>
   );
 };

@@ -80,12 +80,26 @@ const GlobalStyle = createGlobalStyle`
     }
     }
 
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+    -moz-appearance: textfield;
+    }
+
     :root {
         font-family: ${({ theme }) => theme.font.family};
-        font-size: clamp(1rem, 2.7vw, 1.5rem); 
+        font-size: clamp(1.2rem, 2vw, 1.5rem); 
     }
 
     body {
+        display: grid;
+        place-items: center;
         background-color: ${({ theme }) => theme.colors.bg600};
     }
 
@@ -95,7 +109,6 @@ const GlobalStyle = createGlobalStyle`
 
 const Header = styled.header`
   --max-inline: 0.5rem;
-
   min-block-size: 3rem;
 
   text-transform: uppercase;
@@ -106,19 +119,45 @@ const Header = styled.header`
 
   color: ${({ theme }) => theme.colors.wrd500};
 
+  margin-block-end: 3rem;
   & > h1 {
     margin: 0 auto;
     max-inline-size: 8ch;
     word-wrap: break-word;
   }
+
+  @media screen and (max-width: 800px) {
+    margin-block-end: 1rem;
+  }
 `;
 
 const AppMain = styled.main`
-  background-color: ${({ theme }) => theme.colors.bg400};
+  inline-size: fit-content;
+
+  margin: 0 auto;
   padding: 1rem;
   border-radius: 0.8rem;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+
+  background-color: ${({ theme }) => theme.colors.bg400};
+
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+
+  @media screen and (max-width: 800px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
-const Calculator = styled.div``;
+const Calculator = styled.div`
+  inline-size: 100%;
+  padding: 0.8rem;
+
+  & > *:not(:last-child) {
+    margin-bottom: 1.5rem;
+  }
+`;
 
 export { GlobalStyle, AppMain, Header, Calculator };

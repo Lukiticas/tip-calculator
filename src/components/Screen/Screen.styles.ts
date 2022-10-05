@@ -3,9 +3,13 @@ import { lighten } from "polished";
 
 const ScreenBody = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: auto 1fr;
   align-items: center;
   gap: 1rem;
+
+  @media screen and (max-width: 800px) {
+    gap: 0rem;
+  }
 
   @media screen and (max-width: 300px) {
     grid-template-columns: 1fr;
@@ -41,6 +45,10 @@ const ScreenResult = styled.div`
   & > h3 {
     color: ${({ theme }) => theme.colors.acc900};
     font-size: 2.2rem;
+
+    @media screen and (max-width: 800px) {
+      font-size: 1.8rem;
+    }
 
     &::before {
       content: "$";
