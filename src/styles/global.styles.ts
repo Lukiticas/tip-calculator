@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, css } from "styled-components";
 import styled from "styled-components";
 
 const GlobalStyle = createGlobalStyle` 
@@ -94,40 +94,118 @@ const GlobalStyle = createGlobalStyle`
 
     :root {
         font-family: ${({ theme }) => theme.font.family};
-        font-size: clamp(1.2rem, 2vw, 1.5rem); 
+        font-size: clamp(1.5rem, 2vw, 1.5rem); 
+
     }
 
     body {
-        display: grid;
-        place-items: center;
-        background-color: ${({ theme }) => theme.colors.bg600};
+      background-color: ${({ theme }) => theme.colors.bg600};
     }
 
+    #root {
+      min-block-size: 100vh;
+      max-inline-size: 100vw;
 
-    
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+
+      @media screen and (max-width: 800px) {
+        gap: 0rem;
+      }
+    }
 `;
 
 const Header = styled.header`
-  --max-inline: 0.5rem;
-  min-block-size: 3rem;
+  max-inline-size: 5rem;
+  margin: 0 auto;
 
-  text-transform: uppercase;
-  text-align: center;
-  letter-spacing: 0.5rem;
-  line-height: 1.6;
-  font-size: var(--max-inline);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  place-items: center;
 
-  color: ${({ theme }) => theme.colors.wrd500};
+  column-gap: 0.5rem;
 
-  margin-block-end: 3rem;
-  & > h1 {
-    margin: 0 auto;
-    max-inline-size: 8ch;
-    word-wrap: break-word;
+  font-size: 1rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  color: ${({ theme }) => theme.colors.wrd600};
+
+  & > span:nth-of-type(1) {
+    -webkit-animation-delay: 0s;
+    animation-delay: 0s;
+  }
+
+  & > span:nth-of-type(2) {
+    -webkit-animation-delay: 0.1s;
+    animation-delay: 0.1s;
+  }
+
+  & > span:nth-of-type(3) {
+    -webkit-animation-delay: 0.2s;
+    animation-delay: 0.2s;
+  }
+
+  & > span:nth-of-type(4) {
+    -webkit-animation-delay: 0.3s;
+    animation-delay: 0.3s;
+  }
+
+  & > span:nth-of-type(5) {
+    -webkit-animation-delay: 0.4s;
+    animation-delay: 0.4s;
+  }
+
+  & > span:nth-of-type(6) {
+    -webkit-animation-delay: 0.6s;
+    animation-delay: 0.6s;
+  }
+
+  & > span:nth-of-type(7) {
+    -webkit-animation-delay: 0.7s;
+    animation-delay: 0.7s;
+  }
+
+  & > span:nth-of-type(8) {
+    -webkit-animation-delay: 0.8s;
+    animation-delay: 0.8s;
+  }
+
+  & > span {
+    -webkit-animation: wave-text 1s ease-in-out infinite;
+    animation: wave-text 1s ease-in-out infinite;
+  }
+
+  @-webkit-keyframes wave-text {
+    00% {
+      transform: translateY(0em);
+    }
+    60% {
+      transform: translateY(-0.4em);
+    }
+    100% {
+      transform: translateY(0em);
+    }
+  }
+
+  @keyframes wave-text {
+    00% {
+      transform: translateY(0em);
+    }
+    60% {
+      transform: translateY(-0.4em);
+    }
+    100% {
+      transform: translateY(0em);
+    }
   }
 
   @media screen and (max-width: 800px) {
-    margin-block-end: 1rem;
+    margin-block: 1.2rem;
   }
 `;
 
@@ -143,21 +221,22 @@ const AppMain = styled.main`
   gap: 0.5rem;
 
   background-color: ${({ theme }) => theme.colors.bg400};
-
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+
+  animation: showUp 500ms linear backwards;
 
   @media screen and (max-width: 800px) {
     grid-template-columns: 1fr;
   }
-`;
 
-const Calculator = styled.div`
-  inline-size: 100%;
-  padding: 0.8rem;
-
-  & > *:not(:last-child) {
-    margin-bottom: 1.5rem;
+  @keyframes showUp {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 `;
 
-export { GlobalStyle, AppMain, Header, Calculator };
+export { GlobalStyle, AppMain, Header };

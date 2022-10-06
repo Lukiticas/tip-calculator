@@ -1,113 +1,87 @@
-import { useEffect, useMemo, useState } from "react";
-import ThemeClient from "./utils/helpers/ThemeProvider.component.jsx";
+import { useMemo, useState } from "react";
 
 import kFormatter from "./utils/KFormatter.util.js";
 import calculateTip from "./utils/TipCalculator.util.js";
 
-import iconPeople from "/images/icon-person.svg";
-import iconDollar from "/images/icon-dollar.svg";
-
 import Display, { currency } from "./components/Display/Display.component";
-import { AppMain, Calculator, Header } from "./styles/global.styles.js";
-import Input from "./components/Input/Input.component.js";
-import Selection from "./components/Selection/Selection.component.js";
+import TipCalculator from "./components/TipCalculator/TipCalculator.component.js";
+import { AppMain, GlobalStyle, Header } from "./styles/global.styles.js";
+import usePersistedState from "./utils/UsePersistedState.util.js";
 
-interface Bill {
-  bill: string;
+import dark from "./styles/themes/dark.js";
+import light from "./styles/themes/light.js";
+import { ThemeProvider } from "styled-components";
+export interface Bill {
+  value: string;
   selectedTip: string;
   numberOfPeople: string;
-  tipPP: number;
-  totalPP: number;
 }
 
 const App = () => {
+  const [theme, setTheme] = usePersistedState("tipTheme", dark);
   const [bill, setBill] = useState<Bill>({
-    bill: "",
+    value: "",
     selectedTip: "",
     numberOfPeople: "",
-    tipPP: 0,
-    totalPP: 0,
   });
 
-  const displayInformations: currency[] = [
-    { title: "Tip Amount", by: "person", amount: kFormatter(bill.tipPP) },
-    { title: "Total", by: "person", amount: kFormatter(bill.totalPP) },
-  ];
-
-  useMemo(() => {
-    const [value, tipPP, totalPP] = calculateTip(
-      ["", "0"].includes(bill.bill) ? 0 : Number.parseFloat(bill.bill),
-      Number(bill.selectedTip),
-      ["", "0"].includes(bill.numberOfPeople)
-        ? 1
-        : Number.parseFloat(bill.numberOfPeople)
-    );
-
-    setBill((el) => ({ ...el, tipPP, totalPP }));
-  }, [bill.bill, bill.selectedTip, bill.numberOfPeople]);
+  const [tipPP, totalPP] = useMemo(
+    () =>
+      calculateTip(
+        Number.parseFloat(bill.value ? bill.value : "0"),
+        Number(bill.selectedTip),
+        Number.parseFloat(bill.numberOfPeople ? bill.numberOfPeople : "1")
+      ),
+    [bill.value, bill.selectedTip, bill.numberOfPeople]
+  );
 
   const clearValues = () => {
     setBill({
-      bill: "",
+      value: "",
       selectedTip: "",
       numberOfPeople: "",
-      tipPP: 0,
-      totalPP: 0,
     });
   };
-
-  const isAnyValue = [bill.bill, bill.numberOfPeople, bill.selectedTip].some(
-    (el) => el != "0"
-  );
 
   const handleInputChange = (value: string, name: string) => {
     if (!bill.hasOwnProperty(name)) throw new Error("invalid name");
     setBill((e) => ({ ...e, [name]: value }));
   };
 
-  const handleSelectTip = (value: string) => {
-    setBill((el) => ({ ...el, selectedTip: value }));
+  const displayInformations: currency[] = [
+    { title: "Tip Amount", by: "person", amount: kFormatter(tipPP) },
+    { title: "Total", by: "person", amount: kFormatter(totalPP) },
+  ];
+
+  const hasAnyValue = !!!(
+    bill.value ||
+    bill.numberOfPeople ||
+    bill.selectedTip
+  );
+
+  const toggleTheme = () => {
+    setTheme(theme.title === "dark" ? light : dark);
   };
 
   return (
-    <ThemeClient>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
       <>
-        <Header>
-          <h1>SPLITTER</h1>
+        <Header onClick={toggleTheme}>
+          {"SPLITTER".split("").map((el, index) => (
+            <span key={el + index + " letter"}>{el}</span>
+          ))}
         </Header>
         <AppMain>
-          <Calculator>
-            <Input
-              type="number"
-              name="bill"
-              label="bill"
-              iconPath={iconDollar}
-              inputValue={bill.bill}
-              placeholder="0"
-              setInputState={handleInputChange}
-            />
-            <Selection
-              handleSelectTip={handleSelectTip}
-              SelectedTip={bill.selectedTip}
-            />
-            <Input
-              type="number"
-              name="numberOfPeople"
-              label="Number of People"
-              iconPath={iconPeople}
-              inputValue={bill.numberOfPeople}
-              placeholder="0"
-              setInputState={handleInputChange}
-            />
-          </Calculator>
+          <TipCalculator bill={bill} handleInputChange={handleInputChange} />
           <Display
             params={displayInformations}
             resetFunction={() => clearValues()}
-            isEmpty={isAnyValue}
+            isEmpty={hasAnyValue}
           />
         </AppMain>
       </>
-    </ThemeClient>
+    </ThemeProvider>
   );
 };
 

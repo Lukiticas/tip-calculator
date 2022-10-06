@@ -7,10 +7,6 @@ const ScreenBody = styled.div`
   align-items: center;
   gap: 1rem;
 
-  @media screen and (max-width: 800px) {
-    gap: 0rem;
-  }
-
   @media screen and (max-width: 300px) {
     grid-template-columns: 1fr;
     text-align: center;
@@ -24,17 +20,20 @@ const ScreenBody = styled.div`
 `;
 
 const ScreenDescription = styled.div`
+  @media screen and (max-width: 800px) {
+    font-size: 0.8rem;
+  }
+
   & > h2 {
     color: ${({ theme }) => theme.colors.wrd400};
-    display: block;
     font-weight: 600;
-    font-size: 0.8rem;
+    font-size: 0.8em;
     line-height: 1.2;
   }
 
   & > span {
     color: ${({ theme }) => theme.colors.wrd500};
-    font-size: 0.7rem;
+    font-size: 0.7em;
     font-weight: 600;
   }
 `;
@@ -42,13 +41,19 @@ const ScreenDescription = styled.div`
 const ScreenResult = styled.div`
   justify-self: end;
 
-  & > h3 {
-    color: ${({ theme }) => theme.colors.acc900};
-    font-size: 2.2rem;
+  @media screen and (max-width: 800px) {
+    font-size: 0.7em;
+  }
 
-    @media screen and (max-width: 800px) {
-      font-size: 1.8rem;
-    }
+  & > h3 {
+    max-inline-size: 100%;
+    font-size: 2.2em;
+
+    overflow-wrap: break-word;
+    word-break: break-all;
+    text-align: end;
+
+    color: ${({ theme }) => theme.colors.acc900};
 
     &::before {
       content: "$";

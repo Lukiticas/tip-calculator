@@ -1,4 +1,4 @@
-type CTOutupt = [tipValue: number, tipPerPerson: number, totalPerPerson: number]
+type CTOutupt = [tipPerPerson: number, totalPerPerson: number]
 
 
 const calculateTip = (value: number, tip: number, numberOfPeople: number): CTOutupt => {
@@ -6,7 +6,7 @@ const calculateTip = (value: number, tip: number, numberOfPeople: number): CTOut
   const tipPerPerson = (value * (tip / 100)) / numberOfPeople;
   const totalPerPerson = (tipValue + value) / numberOfPeople;
 
-  return [tipValue, tipPerPerson, totalPerPerson];
+  return [tipPerPerson, totalPerPerson];
 };
 
 export default calculateTip;

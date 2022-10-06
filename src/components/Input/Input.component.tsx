@@ -1,9 +1,10 @@
 import {
-  InputBody,
-  InputElement,
-  InputIcon,
   Label,
   Wrapper,
+  InputBody,
+  InputIcon,
+  InvalidSpan,
+  InputElement,
 } from "./Input.styles";
 
 interface InputProps {
@@ -11,45 +12,39 @@ interface InputProps {
   type: string;
   label: string;
   iconPath: string;
+  required?: boolean;
   inputValue: string;
   placeholder: string;
-  required?: boolean;
+  checkValidity?: boolean;
   setInputState: (value: string, name: string) => void;
 }
 
 const Input = (props: InputProps) => {
-  const {
-    name,
-    type,
-    label,
-    iconPath,
-    required,
-    inputValue,
-    placeholder,
-    setInputState,
-  } = props;
-
   const id = Math.floor(Math.random() * (Math.random() * 1000)).toString();
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value, name } = event.target;
-    setInputState(value, name);
+  const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    props.setInputState(target.value, target.name);
   };
+
+  const checkValid = props.inputValue === "0";
 
   return (
     <Wrapper>
-      <Label htmlFor={id}>{label}</Label>
-      <InputBody>
-        <InputIcon src={iconPath} aria-hidden="true" />
+      <Label htmlFor={id}>
+        {props.label}{" "}
+        {props.checkValidity && checkValid && (
+          <InvalidSpan>Can't be 0</InvalidSpan>
+        )}
+      </Label>
+      <InputBody isInvalid={props.checkValidity && checkValid}>
+        <InputIcon src={props.iconPath} aria-hidden="true" />
         <InputElement
-          name={name}
-          value={inputValue}
-          onChange={(e) => handleChange(e)}
-          placeholder={placeholder}
-          type={type}
           id={id}
-          pattern="[1-9]"
-          required={required ? true : false}
+          name={props.name}
+          type={props.type}
+          onChange={handleChange}
+          value={props.inputValue}
+          placeholder={props.placeholder}
         />
       </InputBody>
     </Wrapper>

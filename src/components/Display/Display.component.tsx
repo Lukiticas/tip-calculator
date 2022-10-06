@@ -25,7 +25,7 @@ const Display = ({ params, resetFunction, isEmpty }: DisplayProps) => {
   return (
     <DisplayBody>
       {params && Screens}
-      <DisplayButton type="button" disabled={!isEmpty} onClick={handleClick}>
+      <DisplayButton type="button" disabled={isEmpty} onClick={handleClick}>
         RESET
       </DisplayButton>
     </DisplayBody>

@@ -15,7 +15,8 @@ const DisplayBody = styled.div`
   gap: 1.8rem;
 
   @media screen and (max-width: 800px) {
-    gap: 0.8rem;
+    gap: 1rem;
+    padding: 1rem;
   }
 
   background-color: ${({ theme }) => theme.colors.bg700};
