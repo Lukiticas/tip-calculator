@@ -18,7 +18,7 @@ export interface Bill {
 }
 
 const App = () => {
-  const [theme, setTheme] = usePersistedState("tipTheme", dark);
+  const [theme, setTheme] = usePersistedState("tipTheme", light);
   const [bill, setBill] = useState<Bill>({
     value: "",
     selectedTip: "",
